@@ -146,11 +146,73 @@ void strcopy(const char *origen, char *destino) {
     destino[len] = '\0';
 }
 
+/*
+Ejercicio 17.8. Implementar una función que recibe un arreglo de números y su longitud y lo
+ordena mediante el algoritmo de ordenamiento por selección.
+
+SELECCIÓN: manda los mas chicos adelante, despues considera la lista menos el primero y así.
+*/
+void selection(int* arreglo, int len) {
+    for (int i = 0; i < len; i++) {
+        int menor = i;
+        for (int j = i+1; j < len; j++) {
+            if (arreglo[j] < arreglo[menor]) {
+                menor = j;
+            }
+        }
+        int elemento_i = arreglo[i];
+        arreglo[i] = arreglo[menor];
+        arreglo[menor] = elemento_i;
+    }
+}
+
+/*
+Ejercicio 17.9. Implementar una función que reciba un mensaje y dos números enteros min y
+max. La función debe pedir al usuario que ingrese un número entero entre min y max (inclusive)
+y devolverlo. Si el usuario ingresa un valor inválido se le debe informar y pedir que ingrese un
+nuevo valor, repitiendo hasta que ingrese un número válido.
+*/
+int pedir_numero_rango(char* mensaje, int min, int max) {
+    printf("%s\nRango: desde %d hasta %d (inclusive)",mensaje,min,max);
+    char buffer[8];
+    for (;;) {
+        fgets(buffer,8,stdin);
+        int numero = atoi(buffer);
+        if (numero >= min && numero <= max) {
+            return numero;
+        }
+        printf("Número Inválido\n");
+    }
+}
+
+/*
+Ejercicio 17.10. Implementar una función que reciba una cadena de texto y luego imprima la
+cadena enmarcada entre asteriscos (*). Asumir que la cadena no contiene ningún caracter \n.
+Por ejemplo, si se recibe la cadena "Lenguaje C", debe imprimir:
+**************
+* Lenguaje C *
+**************
+*/
+void imprimir_cadena_encerrada(const char* cadena) {
+    size_t len = strlenn(cadena);
+    size_t cantidad_asteriscos = len + 4;
+    size_t cantidad_lineas = 3;
+    for (size_t i = 0; i < cantidad_lineas; i++) {
+        if (i == 0 || i == 2) {
+            size_t j = 0;
+            while (j < cantidad_asteriscos) {
+                printf("*");
+                j++;
+            }
+            printf("\n");
+        }
+        else {
+            printf("* %s *\n",cadena);
+        }
+    }
+}
+
+
 int main() {
-    char p[] = "holabb";
-    char* copia = malloc(24);
-    strcopy(p,copia);
-    printf("%s\n",copia);
-    free(copia);
     return 0;
 }

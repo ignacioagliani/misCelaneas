@@ -212,7 +212,108 @@ void imprimir_cadena_encerrada(const char* cadena) {
     }
 }
 
+/*
+Ejercicio 17.11. Implementar una función que reciba una cadena de texto s y un número entero n
+, y devuelva una cadena de texto que contiene la cadena s repetida n veces. La cadena producida
+debe ser alojada en el heap, y debe terminar con un \0.
+*/
+char* devolver_cadena_repetida(char* s, int n) {
+    int largo = strlenn(s); // No cuenta caracter /0
+    char cadena_repetida[largo * n + 1];
+    int repeticiones = 0;
+    int posicion = 0;
+    while (repeticiones < n) {
+        for (int i = 0; i < largo; i++) {
+            cadena_repetida[posicion] = s[i];
+            posicion += 1;
+        }
+        repeticiones += 1;
+    }
+    cadena_repetida[posicion] = '\0';
+    char* cadena_heap = malloc(largo * n + 1);
+    if (!cadena_heap) {
+        return NULL;
+    }
+    strcopy(cadena_repetida,cadena_heap);
+    return cadena_heap;
+}
+
+/*
+Ejercicio 17.12. Analizar el funcionamiento de la siguiente función en lenguaje C. ¿Hay algún
+problema en su implementación?
+
+void f() {
+    int *p = malloc(sizeof(int) * 100);
+    for (int i = 0; i < 10; i++) {
+        p[i] = i+1000;
+    }
+    for (int j = 0; j < 100; j++) {
+        printf("%d\n", p[i]);
+    }
+}
+
+RTA:
+    - No verifica que los bytes a solicitar estén disponibles.
+    - Solicita mucha memoria que termina sin usar.
+    - La función no imprime el arreglo (p[i] deberia ser p[j]). De todas formas,
+      si fuese p[j], imprimiría el contenido del arreglo y basura.
+    - No usa free() para liberar la memoria reservada.
+*/
+
+/*
+Ejercicio 17.13. Considerar el siguiente ejemplo. ¿La invocación a free realmente libera la memoria
+apuntada por el puntero a?
+
+int *a = malloc(42);
+int *b = a;
+free(b);
+
+RTA:
+    Sí, lo libera. b contiene la dirreción en la memoria de a, por lo tanto, se libera.
+*/
+
+/*
+Ejercicio 17.14. Considerar el siguiente ejemplo. ¿Hay algún problema con la implementación?
+
+char *nombre;
+fputs“(Ingresa tu nombre: “, stdout);
+fgets(nombre, 100, stdin);
+printf“(Hola %s!\”n, nombre);
+
+RTA:
+    - 'nombre' es un puntero sin inicializar. Apunta a basura.
+    - Linea 2 y 4 -> la posición de las comillas es incorrecta.
+    - Como 'nombre' no está inicializado, escribe en un lugar random de la memoria.
+
+Solución:
+char nombre[100];
+fputs("Ingresa tu nombre: ", stdout);
+fgets(nombre, 100, stdin);
+printf("Hola %s!\n", nombre);
+*/  
+
+/*
+Ejercicio 17.15. Escribir una función que se comporte como la función input de Python. Debe
+recibir un mensaje a imprimir, y luego debe leer una línea de texto de la consola y devolverla.
+La cadena producida debe ser alojada en el heap, y debe terminar con un \0. Asumir que la línea
+de texto ingresada no puede superar los 100 caracteres. Utilizar las funciones de la biblioteca
+estándar fputs y fgets.
+*/
+char* input(char* mensaje) {
+    fputs(mensaje,stdout);
+    char* linea = malloc(101 * sizeof(char));
+    if (!linea) {
+        return NULL;
+    }
+    fgets(linea,101,stdin);
+}
+
 
 int main() {
+    char p[] = "chau";
+    int veces = 2;
+    char* c = devolver_cadena_repetida(p,veces);
+    printf("%s\n",c);
+    free(c);
     return 0;
 }

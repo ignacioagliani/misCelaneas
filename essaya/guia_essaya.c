@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdbool.h> // Para booleanos
 #include <stdlib.h> // Para malloc
 
 /*
@@ -306,14 +306,28 @@ char* input(char* mensaje) {
         return NULL;
     }
     fgets(linea,101,stdin);
+    return linea;
 }
 
+/*
+Ejercicio 17.16. Escribir un programa que genere un archivo binario grabando en él los números
+enteros del 0 al 1000000.
+
+Atención: lo voy a escribir como función, no como programa (la función no se va a llamar 'main').
+*/
+void guardar_binario(void) {
+    FILE* archivo = fopen("rango_numeros.bin","wb");
+    if (archivo == NULL) {
+        perror("No se pudoabrir archivo.");
+        return;
+    }
+    for (int i = 0; i <= 1000000; i++) {
+        fwrite(&i,sizeof(int),1,archivo);
+    }
+    fclose(archivo);
+}
 
 int main() {
-    char p[] = "chau";
-    int veces = 2;
-    char* c = devolver_cadena_repetida(p,veces);
-    printf("%s\n",c);
-    free(c);
+    guardar_binario();
     return 0;
 }

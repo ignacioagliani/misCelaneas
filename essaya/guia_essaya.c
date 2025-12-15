@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h> // Para booleanos
 #include <stdlib.h> // Para malloc
+#include <string.h>
+#include <inttypes.h>
 
 /*
 Ejercicio 17.1. Escribir una función que permita calcular el área de un rectángulo dada su basey altura.
@@ -327,7 +329,59 @@ void guardar_binario(void) {
     fclose(archivo);
 }
 
-int main() {
-    guardar_binario();
+/*
+Ejercicio 17.17. Escribir un programa que cargue un arreglo de números enteros con los números
+almacenados en el archivo generado en el punto anterior.
+a) Asumiendo que se conoce la cantidad de números a leer.
+
+Se va a escribir como función, no como programa
+*/
+int* cargar_archivo_en_arreglo(char* ruta, int longitud) {
+    FILE* archivo = fopen(ruta,"rb");
+    if (archivo ==  NULL) {
+        perror("No se encontró archivo");
+        return NULL;
+    }
+    int* arreglo = malloc((size_t)longitud * sizeof(int));
+    if (arreglo == NULL) {
+        perror("No se pudo reservar memoria");
+        fclose(archivo);
+        return NULL;
+    }
+    size_t leidos = fread(arreglo, sizeof(int), (size_t)longitud, archivo);
+    if (leidos != (size_t)longitud) {
+        perror("Error al leer el archivo");
+        free(arreglo);
+        fclose(archivo);
+        return NULL;
+    }
+    fclose(archivo);
+    return arreglo;
+}
+
+/*
+b) ⋆ Asumiendo que no se conoce la cantidad de números a leer.
+*/
+
+/*
+Ejercicio 17.18. Dada la definición de la estructura persona_t como se muestra a continuación,
+escribir funciones para leer y escribir un arreglo de personas en un archivo:
+
+struct persona {
+    unsigned uint32_t dni;
+    char nombre[100];
+};
+typedef struct persona persona_t;
+
+Atençao: no existe unsigned uint32_t. En su lugar voy a usar uint32_t.
+*/
+struct persona {
+    uint32_t dni;
+    char nombre[100];
+};
+typedef struct persona persona_t;
+
+int main(void) {
+    leer_personas("personas.csv");
     return 0;
 }

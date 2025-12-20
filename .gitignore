@@ -1,0 +1,53 @@
+# --- EJECUTABLES Y BINARIOS ---
+# Bloquea cualquier archivo sin extensión (común en Linux/macOS para ejecutables)
+*
+!*/
+!*.c
+!*.h
+!*.cpp
+!*.hpp
+!*.go
+!*.mod
+!*.sum
+!*.gitignore
+!*.md
+!Makefile
+
+# Bloquea ejecutables específicos de Windows
+*.exe
+*.out
+*.app
+
+# --- OBJETOS Y LIBRERÍAS (Basura de compilación) ---
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.la
+*.lo
+
+# --- DEBUG Y VOLCADOS DE MEMORIA (Seguridad) ---
+core
+core.*
+vgcore.*
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# --- SECRETOS Y CONFIGURACIÓN ---
+.env
+config.h.in
+*.bak
+*.old
+
+# --- IDEs Y HERRAMIENTAS ---
+.vscode/
+.idea/
+.CLION/
+compile_commands.json
+.clangd/

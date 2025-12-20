@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h> // para INT_MIN
+#include <string.h>
 /*
 Advertencia (si cursas con Essaya): los ejercicios del generador de ejercicios de parcial de
 la web de Essaya NO representan el nivel de ejercicios tomados en los exámenes.
@@ -131,11 +132,129 @@ int obtener_valor(const int vector[], int len, int pos) {
     }
 }
 
+/*
+Escribir en C la función `char* strslice(const char* cadena, size_t inicio, size_t fin, size_t step);`
+que recibe por parámetro una cadena, un inicio, fin y step, y devuelve la porción de cadena indicada
+alojada en el heap. La cantidad de bytes reservados debe ser la necesaria para alojar la cadena
+resultante, y no mayor.
+*/
+char* strslice(const char* cadena, size_t inicio, size_t fin, size_t step) {
+    size_t largo_cadena = strlen(cadena);
+    if (step == 0 || inicio > fin || fin > largo_cadena) {
+        return NULL;
+    }
+    char cadena_sliceada[largo_cadena + 1];
+    size_t j = 0;
+    for (size_t i = inicio; i < fin; i+=step) {
+        cadena_sliceada[j] = cadena[i];
+        j++;
+    }
+    cadena_sliceada[j] = '\0';
+    size_t bytes_reserva = j + 1;
+    char* slice = malloc(bytes_reserva);
+    if (!slice) {
+        return NULL;
+    }
+    strcpy(slice,cadena_sliceada);
+    return slice;
+}
+
+/*
+Implementar en C la función char* strreplace(const char* cadena, char viejo, char nuevo);
+que recibe una cadena, un caracter viejo y un caracter nuevo. La función debe devolver una nueva
+cadena alojada en el heap donde todas las ocurrencias de viejo hayan sido reemplazadas por nuevo.
+Si no hay ocurrencias, la cadena resultante debe ser idéntica a la original. La cantidad de bytes
+reservados debe ser la necesaria para alojar la cadena resultante, y no mayor.
+*/
+char* strreplace(const char* cadena, char viejo, char nuevo) {
+    size_t len_cadena = strlen(cadena);
+    size_t len_remplazada = len_cadena + 1; 
+    char cadena_remplazada[len_remplazada];
+    size_t j = 0;
+    while (j < len_cadena) {
+        if (cadena[j] == viejo) {
+            cadena_remplazada[j] = nuevo;
+        } else {
+            cadena_remplazada[j] = cadena[j];
+        }
+        j++;
+    }
+    cadena_remplazada[j] = '\0';
+    char* remplazado_heap = malloc(len_remplazada);
+    if (!remplazado_heap) {
+        return NULL;
+    }
+    strcpy(remplazado_heap,cadena_remplazada);
+    return remplazado_heap;
+}
+
+/*
+Implementar en C una función que reciba un número entero y devuelva 1 si es primo,
+0 en caso contrario.
+*/
+int es_primo(int n) {
+    if (n <= 1) {
+        return 0;
+    }
+    if (n == 2) {
+        return 1;
+    }
+    if (n % 2 == 0) {
+        return 0;
+    }
+    for (int i = 3; i < n; i++) {
+        if (n % i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/*
+Escribir un programa en C que lea números enteros desde la entrada estándar hasta
+encontrar un 0, y luego imprima la suma de todos los números leídos.
+*/
+void leer_y_sumar(void) {
+    int suma = 0;
+    char buffer[16];
+    for (;;) {
+        if (!fgets(buffer,16,stdin)) {
+            printf("Ingresaste un caracter inválido!\n");
+            return;
+        }
+        int numero = atoi(buffer);
+        if (numero == 0) {
+            printf("Suma: %d\n",suma);
+            return;
+        }
+        suma += numero;
+    }
+}
+
+/*
+Implementar en C una función que reciba dos cadenas de caracteres y devuelva 1 si son
+iguales, 0 en caso contrario. No usar la función strcmp.
+*/
+int son_iguales(const char* cadena1, const char* cadena2) {
+    size_t len_cadena1 = strlen(cadena1);
+    size_t len_cadena2 = strlen(cadena2);
+    if (len_cadena1 == len_cadena2){
+        size_t i = 0;
+        while (i < len_cadena1) {
+            if (cadena1[i] != cadena2[i]) {
+                return 0;
+            }
+            i++;
+        }
+        return 1;
+    }
+    return 0;
+}
 
 int main(void) {
-    const int arr[6] = {1,2,3,4,5,6};
-    int p = 2;
-    int val = obtener_valor(arr,6,p);
-    printf("%d\n",val);
+    char a[] = "hola";
+    char b[] = "holas";
+    size_t n = son_iguales(a,b);
+    printf("%ld\n",n);
     return 0;
 }

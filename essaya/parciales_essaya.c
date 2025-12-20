@@ -188,12 +188,73 @@ char* strreplace(const char* cadena, char viejo, char nuevo) {
     return remplazado_heap;
 }
 
+/*
+Implementar en C una función que reciba un número entero y devuelva 1 si es primo,
+0 en caso contrario.
+*/
+int es_primo(int n) {
+    if (n <= 1) {
+        return 0;
+    }
+    if (n == 2) {
+        return 1;
+    }
+    if (n % 2 == 0) {
+        return 0;
+    }
+    for (int i = 3; i < n; i++) {
+        if (n % i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/*
+Escribir un programa en C que lea números enteros desde la entrada estándar hasta
+encontrar un 0, y luego imprima la suma de todos los números leídos.
+*/
+void leer_y_sumar(void) {
+    int suma = 0;
+    char buffer[16];
+    for (;;) {
+        if (!fgets(buffer,16,stdin)) {
+            printf("Ingresaste un caracter inválido!\n");
+            return;
+        }
+        int numero = atoi(buffer);
+        if (numero == 0) {
+            printf("Suma: %d\n",suma);
+            return;
+        }
+        suma += numero;
+    }
+}
+
+/*
+Implementar en C una función que reciba dos cadenas de caracteres y devuelva 1 si son
+iguales, 0 en caso contrario. No usar la función strcmp.
+*/
+int son_iguales(const char* cadena1, const char* cadena2) {
+    size_t len_cadena1 = strlen(cadena1);
+    size_t len_cadena2 = strlen(cadena2);
+    if (len_cadena1 == len_cadena2){
+        size_t i = 0;
+        while (i < len_cadena1) {
+            if (cadena1[i] != cadena2[i]) {
+                return 0;
+            }
+            i++;
+        }
+        return 1;
+    }
+    return 0;
+}
+
 int main(void) {
-    const char arr[7] = "patata";
-    char old = 'a';
-    char new = 'o';
-    char* var = strreplace(arr,old,new);
-    printf("%s\n",var);
-    free(var);
+    char a[] = "hola";
+    char b[] = "holas";
+    size_t n = son_iguales(a,b);
+    printf("%ld\n",n);
     return 0;
 }

@@ -272,6 +272,7 @@ size_t contar_vocales(const char* cadena) {
 Escribir una función en C que reciba un arreglo de enteros y su tamaño, y devuelva el
 índice del elemento máximo
 */
+/*
 size_t devolver_indice_mayor(const int* arreglo, size_t len) {
     if (len == 0) {
         return 0;
@@ -286,9 +287,39 @@ size_t devolver_indice_mayor(const int* arreglo, size_t len) {
     }
     return indice;
 }
+*/
+/*
+Implementar una función char* remover_digitos(const char* str) que reciba una cadena y 
+retorne una nueva cadena eliminando todos los dígitos. La cadena retornada debe estar
+alojada en el heap. La cantidad de bytes reservados debe ser la necesaria para alojar la
+cadena resultante, y no mayor.
+Ejemplo:
+Para la cadena: "Hola123Mundo456"
+Se debe devolver: "HolaMundo"
+*/
+char* remover_digitos(const char* str) {
+    int lenstr = strlen(str);
+    char cadena_sin_digitos[lenstr + 1];
+    size_t j = 0;
+    for (int i = 0; i < lenstr; i++) {
+        if (str[i] < '0' || str[i] > '9') {
+            cadena_sin_digitos[j] = str[i];
+            j++;
+        }
+    }
+    cadena_sin_digitos[j] = '\0';
+    char* cadena_heap = malloc(j + 1);
+    if (!cadena_heap) {
+        return NULL;
+    }
+    strcpy(cadena_heap,cadena_sin_digitos);
+    return cadena_heap;
+}
 
 int main(void) {
-    int arr[5] = {5};
-    printf("%ld\n",devolver_indice_mayor(arr,1));
+    const char p[]= "Hola123Mundo456";
+    char* c = remover_digitos(p);
+    printf("%s\n",c);
+    free(c);
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h> // para INT_MIN
 #include <string.h>
+#include <ctype.h> // para tolower()
 /*
 Advertencia (si cursas con Essaya): los ejercicios del generador de ejercicios de parcial de
 la web de Essaya NO representan el nivel de ejercicios tomados en los exámenes.
@@ -251,10 +252,74 @@ int son_iguales(const char* cadena1, const char* cadena2) {
     return 0;
 }
 
+/*
+Escribir un programa en C que lea una cadena de caracteres y cuente cuántas vocales contiene.
+*/
+size_t contar_vocales(const char* cadena) {
+    size_t cantidad_vocales = 0;
+    size_t i = 0;
+    while (cadena[i] != '\0') {
+        char minuscula = (char)tolower((unsigned char)cadena[i]);
+        if (minuscula == 'a' || minuscula == 'e' || minuscula == 'i' || minuscula == 'o' || minuscula == 'u') {
+            cantidad_vocales++;
+        }
+        i++;
+    }
+    return cantidad_vocales;
+}
+
+/*
+Escribir una función en C que reciba un arreglo de enteros y su tamaño, y devuelva el
+índice del elemento máximo
+*/
+/*
+size_t devolver_indice_mayor(const int* arreglo, size_t len) {
+    if (len == 0) {
+        return 0;
+    }
+    size_t indice = 0;
+    int mayor_elemento = arreglo[0];
+    for (int i = 1; i < len; i++) {
+        if (arreglo[i] > mayor_elemento) {
+            mayor_elemento = arreglo[i];
+            indice = i;
+        }
+    }
+    return indice;
+}
+*/
+/*
+Implementar una función char* remover_digitos(const char* str) que reciba una cadena y 
+retorne una nueva cadena eliminando todos los dígitos. La cadena retornada debe estar
+alojada en el heap. La cantidad de bytes reservados debe ser la necesaria para alojar la
+cadena resultante, y no mayor.
+Ejemplo:
+Para la cadena: "Hola123Mundo456"
+Se debe devolver: "HolaMundo"
+*/
+char* remover_digitos(const char* str) {
+    int lenstr = strlen(str);
+    char cadena_sin_digitos[lenstr + 1];
+    size_t j = 0;
+    for (int i = 0; i < lenstr; i++) {
+        if (str[i] < '0' || str[i] > '9') {
+            cadena_sin_digitos[j] = str[i];
+            j++;
+        }
+    }
+    cadena_sin_digitos[j] = '\0';
+    char* cadena_heap = malloc(j + 1);
+    if (!cadena_heap) {
+        return NULL;
+    }
+    strcpy(cadena_heap,cadena_sin_digitos);
+    return cadena_heap;
+}
+
 int main(void) {
-    char a[] = "hola";
-    char b[] = "holas";
-    size_t n = son_iguales(a,b);
-    printf("%ld\n",n);
+    const char p[]= "Hola123Mundo456";
+    char* c = remover_digitos(p);
+    printf("%s\n",c);
+    free(c);
     return 0;
 }
